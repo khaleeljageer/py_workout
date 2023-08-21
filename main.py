@@ -4,7 +4,7 @@ base_url = "https://www.youtube.com/watch?v="
 
 
 def main():
-    api_key = "AIzaSyD_HDUhhVbePg2qzsHwQi8QAQfK3VxLPo8"
+    api_key = "API_KEY"
     page_token = 'CNgEEAA'
 
     while True:
