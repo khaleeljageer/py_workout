@@ -1,6 +1,6 @@
 from tamil import utf8
-from collections import Counter
 from kural import thirukural
+from collections import Counter
 import re
 
 INPUT = ('தமிழ் ஔவை ஈழ பழுவூர் ஸ்ரீமயூரபுருஷன் வீட்டில் லீவு நாளான மூன்றாம் தேதி ஞாயிறு ஏழு மணி விருந்துக்கு '
@@ -21,16 +21,17 @@ def char_count():
 
 
 def get_tamil_letter():
-    tamil_letters = utf8.uyir_letters + utf8.mei_letters + utf8.uyirmei_letters
+    tamil_letters = (
+            utf8.uyir_letters + utf8.mei_letters + utf8.uyirmei_letters
+            # + utf8.grantha_mei_letters + utf8.grantha_agaram_letters
+            # + utf8.grantha_uyirmei_letters
+    )
     tamil_letters.append(utf8.aytham_letter)
     return tamil_letters
 
 
-def kural_char_count(kural_words):
-    words = utf8.get_words(kural_words)
-    print('Words : ', len(words))
-    print('Unique words : ', len(set(words)))
-    letters = set(utf8.get_letters(kural_words))
+def kural_char_count(words):
+    letters = set(utf8.get_letters(words))
     filtered_letters = remove_chars(letters)
     kural_letters = sorted(filtered_letters)
     tamil_letters = get_tamil_letter()
@@ -47,6 +48,13 @@ def remove_chars(chars):
     return [char for char in filtered if char != '']
 
 
+def write_to_file(u_words):
+    with open("words/kural_words.txt", 'w') as f:
+        for u_word in u_words:
+            f.writelines(u_word + '\n')
+    f.close()
+
+
 def kural_word_count():
     kural_words = []
     verse_list = [item['kural'] for item in thirukural.thirukural]
@@ -57,7 +65,10 @@ def kural_word_count():
         result_string = ' '.join(verse_words)
         kural_words.append(result_string)
     kural_words = ' '.join(kural_words)
-    kural_char_count(kural_words)
+    words = set(utf8.get_words(kural_words))
+    write_to_file(list(words))
+    # print('Unique words : ', len(words))
+    # kural_char_count(words)
 
 
 if __name__ == '__main__':
